@@ -1,0 +1,152 @@
+:root {
+    --primary: #332590; /* Matching your title color */
+    --accent: #667eea;
+    --text-dark: #333;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    background-color: #f0f0f0; /* A light background for the login page */
+}
+
+/* Login Page Styling */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+#loginForm {
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 350px;
+}
+
+#loginForm h2 {
+    margin-bottom: 20px;
+    color: var(--primary);
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* To include padding in the width */
+}
+
+#loginForm button {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#loginForm button:hover {
+    background: var(--accent);
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+}
+
+.nav-link {
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+    font-size: 16px;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: var(--accent);
+}
+
+/* Content Area */
+.main-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOP BAR WITH STOCK RIBBON */
+.top-bar {
+    height: 70px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+#stockRibbon {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
+    font-weight: bold;
+    color: var(--primary);
+    font-size: 1.4rem;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.stock-item {
+    padding: 0 30px;
+    border-right: 1px solid #eee;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
