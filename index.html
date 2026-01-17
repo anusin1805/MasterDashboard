@@ -5,31 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinWise F11 - Master Dashboard</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <style>
-        :root {
-            --primary: #332590; /* Matching your title color */
-            --accent: #667eea;
-            --text-dark: #333;
-        }
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
-
-        /* Sidebar Styling */
-        .sidebar { width: 250px; background: var(--primary); color: white; display: flex; flex-direction: column; padding: 20px; }
-        .sidebar h2 { font-size: 20px; text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
-        .nav-link { padding: 15px; color: white; text-decoration: none; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; display: block; border: none; background: none; text-align: left; width: 100%; font-size: 16px; }
-        .nav-link:hover, .nav-link.active { background: var(--accent); }
-
-        /* Content Area */
-        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
-        
-        /* TOP BAR WITH STOCK RIBBON */
-        .top-bar { height: 70px; background: #fff; border-bottom: 1px solid #ddd; display: flex; align-items: center; overflow: hidden; position: relative; }
-        #stockRibbon { display: flex; white-space: nowrap; animation: marquee 30s linear infinite; font-weight: bold; color: var(--primary); font-size: 1.4rem; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .stock-item { padding: 0 30px; border-right: 1px solid #eee; }
-
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -49,43 +25,6 @@
         <iframe id="view" src="https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/"></iframe>
     </div>
 
-    <script>
-        // App Navigation Logic
-        function load(page) {
-            const view = document.getElementById('view');
-            const links = document.querySelectorAll('.nav-link');
-            links.forEach(l => l.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            if(page === 'profile') view.src = "https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/";
-            if(page === 'market') view.src = "https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/";
-            if(page === 'impact') view.src = "https://anusin1805.github.io/financeF11bot/";
-            if(page === 'chat') view.src = "https://vc-chat-box.onrender.com/";
-            if(page === 'subs') view.src = "https://anusin1805.github.io/F11EcosystemSubs-login/";
-        }
-
-        // Live Stock Ribbon Logic
-        function updateStockRibbon() {
-            const proxyUrl = 'https://api.allorigins.win/get?url=';
-            const targetUrl = encodeURIComponent('https://storage.cloud.google.com/finindiaconsult-mutual-fund/Google%20Finance%20Investment%20Tracker%20-%20Google%20Sheets.html');
-            
-            $.getJSON(proxyUrl + targetUrl, function(data) {
-                const html = data.contents;
-                // Example: Extracting data using your specified logic
-                // Note: Actual selectors should match your Google Sheet HTML structure
-                $('#stockRibbon').html(`
-                    <span class="stock-item">RELIANCE: ₹2,940.50 (+1.2%)</span>
-                    <span class="stock-item">TCS: ₹4,120.30 (-0.5%)</span>
-                    <span class="stock-item">ESG INDEX: 142.10 (+2.1%)</span>
-                    <span class="stock-item">F11 FORT: 1,050.00 (+0.8%)</span>
-                `);
-            });
-        }
-
-        $(document).ready(function () {
-            updateStockRibbon();
-            setInterval(updateStockRibbon, 60000); // Refresh every minute
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
