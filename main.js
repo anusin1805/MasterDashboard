@@ -84,3 +84,12 @@ function updateStockRibbon() {
         });
     });
 }
+
+// Listen for "shouts" from the sub-apps in the iframes
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'BIAS_DETECTED') {
+        alert("Dashboard received your profile! Updating your stocks...");
+        // Directly trigger the ribbon update without waiting for a database refresh
+        updateRibbonForBias(event.data.value);
+    }
+});
