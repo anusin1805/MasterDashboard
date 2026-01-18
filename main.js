@@ -1,4 +1,44 @@
 // main.js - The logic for your Dashboard and Stock Ribbon
+import { db, auth } from './firebase-config.js';
+import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 1. THE BRAIN: Real-time Listener
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Listen for changes to this user's profile in real-time
+        onSnapshot(doc(db, "users", user.uid), (doc) => {
+            const data = doc.data();
+            if (data) {
+                console.log("Profile Update Detected:", data);
+                
+                // IF user just spun the wheel, update the UI
+                if (data.bias) {
+                    updateRibbonForBias(data.bias);
+                    document.getElementById('currentBiasHeader').innerText = `Strategy: ${data.bias}`;
+                }
+                
+                // IF user just paid, unlock the Market Dashboard
+                if (data.subscriptionActive) {
+                    enablePremiumFeatures();
+                }
+            }
+        });
+    }
+});
+
+// 2. THE REACTION: Dynamic Stock Ribbon
+function updateRibbonForBias(bias) {
+    let specificStocks = [];
+    
+    // Logic to change ribbon content based on behavioral profile
+    if (bias === 'Loss Aversion') {
+        specificStocks = ['GOLD', 'RELIANCE', 'LIQUIDBEES']; // "Fortress" assets
+    } else if (bias === 'Self-Attribution') {
+        specificStocks = ['ZOMATO', 'ADANIGREEN', 'BTC']; // "Growth" assets
+    }
+    
+    renderRibbon(specificStocks); // Call your existing ribbon drawing function
+}
 
 $(document).ready(function () {
     updateStockRibbon();
