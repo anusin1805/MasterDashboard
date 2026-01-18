@@ -11,22 +11,26 @@
 
     <div class="sidebar">
         <h2>FinWise F11</h2>
-        <button class="nav-link active" onclick="load('profile')">🎡 Behavior Wheel</button>
-        <button class="nav-link" onclick="load('market')">📈 Live Market</button>
-        <button class="nav-link" onclick="load('impact')">🌱 ESG Impact</button>
-        <button class="nav-link" onclick="load('chat')">💬 24/7 Chat</button>
-        <button class="nav-link" onclick="load('subs')">💳 Subscription</button>
+        <button class="nav-link active" onclick="loadApp('profile')">🎡 Behavior Wheel</button>
+        <button class="nav-link" onclick="loadApp('market')">📈 Live Market</button>
+        <button class="nav-link" onclick="loadApp('chat')">💬 24/7 Chat</button>
+        <button class="nav-link" onclick="loadApp('subs')">💳 Subscription</button>
+        
+        <div class="strategy-indicator">
+            <p id="currentBiasHeader">Strategy: Loading...</p>
+        </div>
     </div>
 
     <div class="main-wrapper">
         <div class="top-bar">
-            <div id="stockRibbon">Fetching Market Data...</div>
+            <div id="stockRibbonContainer">
+                <div id="stockRibbon">Fetching Market Data...</div>
+            </div>
         </div>
+
         <iframe id="view" src="https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/"></iframe>
     </div>
-    <div id="stockRibbonContainer" style="background: white; white-space: nowrap; overflow: hidden; padding: 10px; border-bottom: 2px solid #eee;">
-    <div id="stockRibbon" style="display: inline-block; animation: marquee 30s linear infinite;"></div>
-    </div>
+
     <script type="module" src="main.js"></script>
 </body>
 </html>
