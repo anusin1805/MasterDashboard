@@ -15,30 +15,35 @@ const SOURCES = [
 
 async function refreshDashboard(bias) {
     let combinedData = [];
-    const ribbonElement = document.getElementById('stockRibbon');
-    
+    const ribbonContainer = document.getElementById('stockRibbon');
+
     for (const source of SOURCES) {
         try {
-            // Using a CORS proxy to ensure Google Sheets allows the fetch
-            const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(source.url);
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(source.url)}`;
             const response = await fetch(proxyUrl);
-            const json = await response.json();
-            const csvText = json.contents;
             
-            const rows = csvText.split('\n').map(row => row.split(','));
+            if (!response.ok) throw new Error('Network response was not ok');
+            
+            const data = await response.json();
+            const csvText = data.contents; 
+
+            // Split by lines and handle potential carriage returns (\r)
+            const rows = csvText.split(/\r?\n/).map(row => row.split(','));
             
             const formattedRows = rows.slice(1).map(row => ({
                 symbol: row[3]?.replace(/"/g, '').trim(), 
                 close: row[8]?.replace(/"/g, '').trim(), 
                 change: row[12]?.replace(/"/g, '').trim(), 
                 currency: source.currency
-            }));
-            
+            })).filter(item => item.symbol && item.symbol !== ""); 
+
             combinedData = combinedData.concat(formattedRows);
         } catch (e) {
-            console.error("Fetch error for:", source.currency, e);
+            console.error(`Error fetching ${source.currency} data:`, e);
         }
     }
+    
+    // Pass the combined ₹ and $ data to be displayed
     renderRibbon(combinedData, bias);
 }
 
