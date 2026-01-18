@@ -26,6 +26,44 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+
+        async function updateStockRibbon() {
+    // The CSV Export URL for your specific Google Sheet
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/1W4G9JNnxBMCBOg5c42j1_8AthrTT9wfLIHGkYP5uqxs/export?format=csv&gid=0";
+
+    try {
+        const response = await fetch(sheetUrl);
+        const csvText = await response.text();
+        
+        // Convert CSV text into rows
+        const rows = csvText.split('\n').map(row => row.split(','));
+        
+        // Assuming: Column A is Name (0), Column B is Price (1), Column C is Change (2)
+        // We skip the header (rows[0]) and start from row 1
+        let ribbonHTML = "";
+        
+        for (let i = 1; i < rows.length; i++) {
+            const name = rows[i][0];
+            const price = rows[i][1];
+            const change = rows[i][2] || "0%";
+
+            if (name && price) {
+                const color = change.includes('-') ? 'red' : 'green';
+                ribbonHTML += `
+                    <span style="margin-right: 40px; font-weight: bold;">
+                        ${name}: <span style="color: black;">₹${price}</span> 
+                        <span style="color: ${color}; font-size: 0.8em;">(${change})</span>
+                    </span>`;
+            }
+        }
+
+        $('#stockRibbon').html(ribbonHTML);
+    } catch (error) {
+        console.error("Error fetching sheet data:", error);
+        $('#stockRibbon').html("Market Data Temporarily Unavailable");
+    }
+}
+
 // 2. THE REACTION: Dynamic Stock Ribbon
 function updateRibbonForBias(bias) {
     let specificStocks = [];
