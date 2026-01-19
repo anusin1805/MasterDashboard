@@ -56,8 +56,9 @@ function renderRibbon(data, bias) {
     };
 
     const targetTickers = strategies[bias] || strategies['Default'];
-    const filtered = data.filter(item => targetTickers.includes(item.symbol));
-
+    const filtered = data.filter(item => 
+    targetTickers.map(t => t.toUpperCase()).includes(item.symbol?.toUpperCase()));
+    
     if (filtered.length === 0) {
         html = "<span>No tickers found for strategy: " + bias + "</span>";
     } else {
