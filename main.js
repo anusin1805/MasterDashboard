@@ -130,5 +130,3 @@ onAuthStateChanged(auth, (user) => {
         console.log("No user logged in.");
     }
 });
-
-
