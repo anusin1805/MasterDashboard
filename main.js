@@ -18,72 +18,56 @@ async function refreshDashboard(bias) {
     let combinedData = [];
     const ribbon = document.getElementById('stockRibbon');
     
-    // 1. Loading Indicator
-    ribbon.innerHTML = '<span style="color:blue; padding: 0 20px;">Connecting to Market Data...</span>';
+    ribbon.innerHTML = '<span style="color:blue; padding: 0 20px;">Fetching Latest Prices...</span>';
 
     for (const source of SOURCES) {
         try {
-            // STRATEGY CHANGE: Use a more stable CORS proxy (corsproxy.io)
-            // This proxy returns the RAW CSV text directly, not JSON.
-            const targetUrl = `${source.url}&t=${new Date().getTime()}`; // Prevent caching
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+            // DIRECT FETCH: We add a cache-buster at the end
+            const fetchUrl = `${source.url}&cachebust=${new Date().getTime()}`;
             
-            const response = await fetch(proxyUrl);
+            const response = await fetch(fetchUrl);
             
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-            
-            // IMPORTANT: With this proxy, we get text() directly, not json()
-            const csvText = await response.text(); 
-
-            // Check if we actually got a CSV or an HTML error page
-            if (csvText.trim().startsWith("<!DOCTYPE") || csvText.includes("Oops")) {
-                throw new Error("Proxy returned an error page instead of data.");
+            if (!response.ok) {
+                // If direct fetch fails, fallback to a secondary proxy
+                console.warn(`Direct fetch failed for ${source.currency}, trying fallback proxy...`);
+                const fallbackProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(fetchUrl)}`;
+                const fallbackResponse = await fetch(fallbackProxy);
+                if (!fallbackResponse.ok) throw new Error("Both direct and proxy fetch failed.");
+                var csvText = await fallbackResponse.text();
+            } else {
+                var csvText = await response.text();
             }
 
-          // To this more flexible line:
-             const rows = csvText.split(/\r?\n/).map(row => {
-        // Automatically detect if the row uses commas or semicolons
-           const delimiter = row.includes(';') ? ';' : ',';
-           return row.split(delimiter);
-           });
+            // Split by rows and then by commas
+            const rows = csvText.split(/\r?\n/).map(row => row.split(','));
+            if (rows.length < 2) continue;
 
-            if (rows.length < 2) continue; 
-
-            // --- AUTO-DETECT COLUMNS (Same Logic as before) ---
-            const headers = rows[0].map(h => h.toLowerCase().replace(/"/g, '').trim());
-            
-            let symbolIdx = headers.findIndex(h => h.includes('symbol') || h.includes('ticker'));
-            let priceIdx = headers.findIndex(h => h.includes('price') || h.includes('close') || h.includes('ltp'));
-            let changeIdx = headers.findIndex(h => h.includes('change') || h.includes('chg'));
-
-            // Fallbacks for your specific sheets
-            if (symbolIdx === -1) symbolIdx = (source.currency === "₹") ? 0 : 3; 
-            if (priceIdx === -1) priceIdx = 4;
-            if (changeIdx === -1) changeIdx = 5;
-
+            // Using your exact spreadsheet indices from the image
             const formattedRows = rows.slice(1).map(row => {
-                const symbol = row[symbolIdx] ? row[symbolIdx].replace(/"/g, '').trim() : "N/A";
-                const close = row[priceIdx] ? row[priceIdx].replace(/"/g, '').trim() : "0.00";
-                const change = row[changeIdx] ? row[changeIdx].replace(/"/g, '').trim() : "0%";
+         // We use your exact indices from the spreadsheet image
+        const ticker = row[3] ? row[3].replace(/"/g, '').trim() : "";
+        const price = row[8] ? row[8].replace(/"/g, '').trim() : "";
+        const change = row[12] ? row[12].replace(/"/g, '').trim() : "";
 
-                return {
-                    symbol: symbol,
-                    close: close,
-                    change: change,
-                    currency: source.currency
-                };
-            }).filter(item => item.symbol && item.symbol !== "N/A" && item.symbol.length > 1);
-
+        return {
+              symbol: ticker,
+              close: price,
+              change: change,
+              currency: source.currency
+              };
+             }).filter(item => item.symbol && item.symbol.length > 1 && item.symbol !== "Symbol"); 
+            // The last check ensures we don't accidentally include header text
+            
             combinedData = combinedData.concat(formattedRows);
 
         } catch (e) {
-            console.error(`Error fetching ${source.currency}:`, e);
-            // Don't stop the loop; try the next source even if one fails
+            console.error(`Error for ${source.currency}:`, e);
         }
     }
 
     renderRibbon(combinedData, bias);
 }
+
 // 2. RIBBON RENDER FUNCTION
 function renderRibbon(data, bias) {
     const ribbon = document.getElementById('stockRibbon');
