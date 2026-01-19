@@ -14,49 +14,71 @@ const SOURCES = [
 ];
 
 // 1. DATA FETCHING FUNCTION
+// REPLACE your current refreshDashboard function with this:
+
 async function refreshDashboard(bias) {
     let combinedData = [];
-    console.log("Fetching for Bias:", bias);
+    const ribbon = document.getElementById('stockRibbon');
+    
+    // 1. Show a loading state so you know it's working
+    ribbon.innerHTML = '<span style="color:blue; padding:20px;">Fetching Market Data...</span>';
 
     for (const source of SOURCES) {
         try {
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(source.url)}`;
+            // Add a timestamp to prevent caching
+            const noCacheUrl = `${source.url}&t=${new Date().getTime()}`;
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(noCacheUrl)}`;
+            
             const response = await fetch(proxyUrl);
             const json = await response.json();
             const csvText = json.contents;
 
+            // Split rows and handle different newline formats
             const rows = csvText.split(/\r?\n/).map(row => row.split(','));
-            
-            // --- DIAGNOSTIC LOG (Check Console for these) ---
-            if(rows.length > 1) {
-                console.log(`Source ${source.currency} Headers:`, rows[0]);
-                console.log(`Source ${source.currency} Row 1:`, rows[1]);
-            }
 
-            const formattedRows = rows.slice(1).map((row) => {
-                // FALLBACK: If row[3] is empty, try to find the right column safely
-                const ticker = row[3]?.replace(/"/g, '').trim(); 
-                const price = row[8]?.replace(/"/g, '').trim(); 
-                const pctChange = row[12]?.replace(/"/g, '').trim(); 
+            if (rows.length < 2) continue; // Skip if empty
+
+            // --- AUTO-DETECT COLUMNS ---
+            // We search the Header Row (rows[0]) to find where the data is hiding
+            const headers = rows[0].map(h => h.toLowerCase().replace(/"/g, '').trim());
+            
+            // Look for "Symbol", "Ticker", or just use column 0 as fallback
+            let symbolIdx = headers.findIndex(h => h.includes('symbol') || h.includes('ticker') || h.includes('stock'));
+            // Look for "Price", "Close", "LTP", or use column 1 as fallback
+            let priceIdx = headers.findIndex(h => h.includes('price') || h.includes('close') || h.includes('ltp'));
+            // Look for "Change", "CHG", or use column 2 as fallback
+            let changeIdx = headers.findIndex(h => h.includes('change') || h.includes('chg'));
+
+            // SAFETY FALLBACK: If headers are missing, try standard indexes
+            if (symbolIdx === -1) symbolIdx = 0; // Assume Symbol is first
+            if (priceIdx === -1) priceIdx = 4;   // Common location for price
+            if (changeIdx === -1) changeIdx = 5; // Common location for change
+
+            console.log(`Detected Columns for ${source.currency}: Symbol[${symbolIdx}], Price[${priceIdx}], Change[${changeIdx}]`);
+
+            const formattedRows = rows.slice(1).map(row => {
+                // Safe extraction
+                const symbol = row[symbolIdx] ? row[symbolIdx].replace(/"/g, '').trim() : "N/A";
+                const close = row[priceIdx] ? row[priceIdx].replace(/"/g, '').trim() : "0.00";
+                const change = row[changeIdx] ? row[changeIdx].replace(/"/g, '').trim() : "0%";
 
                 return {
-                    symbol: ticker,
-                    close: price,
-                    change: pctChange,
+                    symbol: symbol,
+                    close: close,
+                    change: change,
                     currency: source.currency
                 };
-            }).filter(item => item.symbol && item.symbol.length > 0);
+            }).filter(item => item.symbol && item.symbol !== "N/A" && item.symbol.length > 1);
 
             combinedData = combinedData.concat(formattedRows);
+
         } catch (e) {
-            console.error("Fetch Error:", e);
+            console.error(`Error fetching ${source.currency}:`, e);
         }
     }
 
-    console.log("Total Items Found:", combinedData.length);
     renderRibbon(combinedData, bias);
 }
-
 // 2. RIBBON RENDER FUNCTION
 function renderRibbon(data, bias) {
     const ribbon = document.getElementById('stockRibbon');
