@@ -50,7 +50,23 @@ async function refreshDashboard(bias) {
             console.error("Fetch Error:", e);
         }
     }
-    
+    // 1. Run this immediately so the ribbon isn't blank
+refreshDashboard('Default'); 
+
+// 2. Then try to connect to Firebase
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        onSnapshot(doc(db, "users", user.uid), (doc) => {
+            if (doc.exists()) {
+                const currentBias = doc.data().bias;
+                document.getElementById('currentBiasHeader').innerText = `Strategy: ${currentBias}`;
+                refreshDashboard(currentBias);
+            }
+        });
+    } else {
+        console.log("No user logged in, staying on Default strategy.");
+    }
+});
     console.log("Combined Data Array:", combinedData);
     renderRibbon(combinedData, bias);
 }
