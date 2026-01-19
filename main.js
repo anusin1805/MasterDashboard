@@ -14,50 +14,49 @@ const SOURCES = [
 ];
 
 // 1. DATA FETCHING FUNCTION
-// REPLACE your current refreshDashboard function with this:
-
 async function refreshDashboard(bias) {
     let combinedData = [];
     const ribbon = document.getElementById('stockRibbon');
     
-    // 1. Show a loading state so you know it's working
-    ribbon.innerHTML = '<span style="color:blue; padding:20px;">Fetching Market Data...</span>';
+    // 1. Loading Indicator
+    ribbon.innerHTML = '<span style="color:blue; padding: 0 20px;">Connecting to Market Data...</span>';
 
     for (const source of SOURCES) {
         try {
-            // Add a timestamp to prevent caching
-            const noCacheUrl = `${source.url}&t=${new Date().getTime()}`;
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(noCacheUrl)}`;
+            // STRATEGY CHANGE: Use a more stable CORS proxy (corsproxy.io)
+            // This proxy returns the RAW CSV text directly, not JSON.
+            const targetUrl = `${source.url}&t=${new Date().getTime()}`; // Prevent caching
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
             
             const response = await fetch(proxyUrl);
-            const json = await response.json();
-            const csvText = json.contents;
+            
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            
+            // IMPORTANT: With this proxy, we get text() directly, not json()
+            const csvText = await response.text(); 
 
-            // Split rows and handle different newline formats
+            // Check if we actually got a CSV or an HTML error page
+            if (csvText.trim().startsWith("<!DOCTYPE") || csvText.includes("Oops")) {
+                throw new Error("Proxy returned an error page instead of data.");
+            }
+
             const rows = csvText.split(/\r?\n/).map(row => row.split(','));
 
-            if (rows.length < 2) continue; // Skip if empty
+            if (rows.length < 2) continue; 
 
-            // --- AUTO-DETECT COLUMNS ---
-            // We search the Header Row (rows[0]) to find where the data is hiding
+            // --- AUTO-DETECT COLUMNS (Same Logic as before) ---
             const headers = rows[0].map(h => h.toLowerCase().replace(/"/g, '').trim());
             
-            // Look for "Symbol", "Ticker", or just use column 0 as fallback
-            let symbolIdx = headers.findIndex(h => h.includes('symbol') || h.includes('ticker') || h.includes('stock'));
-            // Look for "Price", "Close", "LTP", or use column 1 as fallback
+            let symbolIdx = headers.findIndex(h => h.includes('symbol') || h.includes('ticker'));
             let priceIdx = headers.findIndex(h => h.includes('price') || h.includes('close') || h.includes('ltp'));
-            // Look for "Change", "CHG", or use column 2 as fallback
             let changeIdx = headers.findIndex(h => h.includes('change') || h.includes('chg'));
 
-            // SAFETY FALLBACK: If headers are missing, try standard indexes
-            if (symbolIdx === -1) symbolIdx = 0; // Assume Symbol is first
-            if (priceIdx === -1) priceIdx = 4;   // Common location for price
-            if (changeIdx === -1) changeIdx = 5; // Common location for change
-
-            console.log(`Detected Columns for ${source.currency}: Symbol[${symbolIdx}], Price[${priceIdx}], Change[${changeIdx}]`);
+            // Fallbacks for your specific sheets
+            if (symbolIdx === -1) symbolIdx = (source.currency === "₹") ? 0 : 3; 
+            if (priceIdx === -1) priceIdx = 4;
+            if (changeIdx === -1) changeIdx = 5;
 
             const formattedRows = rows.slice(1).map(row => {
-                // Safe extraction
                 const symbol = row[symbolIdx] ? row[symbolIdx].replace(/"/g, '').trim() : "N/A";
                 const close = row[priceIdx] ? row[priceIdx].replace(/"/g, '').trim() : "0.00";
                 const change = row[changeIdx] ? row[changeIdx].replace(/"/g, '').trim() : "0%";
@@ -74,6 +73,7 @@ async function refreshDashboard(bias) {
 
         } catch (e) {
             console.error(`Error fetching ${source.currency}:`, e);
+            // Don't stop the loop; try the next source even if one fails
         }
     }
 
