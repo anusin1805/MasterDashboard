@@ -88,26 +88,26 @@ async function refreshDashboard(bias) {
 function renderRibbon(data, bias) {
     const ribbon = document.getElementById('stockRibbon');
     
-    if (data.length === 0) {
-        ribbon.innerHTML = `<span style="color:red; padding: 0 20px;">Waiting for data... (Check Console F12 if stuck)</span>`;
+    if (!data || data.length === 0) {
+        ribbon.innerHTML = '<span style="color:red; padding:20px;">No data found. Check CSV column headers.</span>';
         return;
     }
 
-    // Showing ALL data for diagnostic purposes (Filters removed temporarily)
     let html = "";
     data.forEach(item => {
         const isDown = item.change && item.change.includes('-');
         const trendColor = isDown ? '#ff4d4d' : '#2ecc71';
+        // Adding explicit inline styles to ensure visibility
         html += `
-            <span class="stock-item" style="margin-right:40px; font-weight:bold; display:inline-block;">
+            <span class="stock-item" style="display: inline-block; margin-right: 50px; color: black !important; font-weight: bold; font-family: sans-serif;">
                 ${item.symbol}: ${item.currency}${item.close} 
-                <span style="color: ${trendColor};">(${item.change})</span>
+                <span style="color: ${trendColor} !important;">(${item.change})</span>
             </span>`;
     });
 
     ribbon.innerHTML = html;
+    console.log("Ribbon HTML populated with", data.length, "items.");
 }
-
 // 3. FIX FOR "loadApp is not defined"
 // Modules make functions private by default. We must attach it to 'window' to let HTML buttons use it.
 window.loadApp = function(page) {
