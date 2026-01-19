@@ -15,67 +15,68 @@ const SOURCES = [
 
 async function refreshDashboard(bias) {
     let combinedData = [];
-    const ribbonContainer = document.getElementById('stockRibbon');
+    console.log("Fetching for Bias:", bias);
 
     for (const source of SOURCES) {
         try {
             const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(source.url)}`;
             const response = await fetch(proxyUrl);
-            
-            if (!response.ok) throw new Error('Network response was not ok');
-            
-            const data = await response.json();
-            const csvText = data.contents; 
+            const json = await response.json();
+            const csvText = json.contents;
 
-            // Split by lines and handle potential carriage returns (\r)
             const rows = csvText.split(/\r?\n/).map(row => row.split(','));
             
-            const formattedRows = rows.slice(1).map(row => ({
-                symbol: row[3]?.replace(/"/g, '').trim(), 
-                close: row[8]?.replace(/"/g, '').trim(), 
-                change: row[12]?.replace(/"/g, '').trim(), 
-                currency: source.currency
-            })).filter(item => item.symbol && item.symbol !== ""); 
+            // --- DIAGNOSTIC LOG ---
+            console.log(`Source ${source.currency} Row 1 (Headers):`, rows[0]);
+            console.log(`Source ${source.currency} Row 2 (First Data):`, rows[1]);
+
+            const formattedRows = rows.slice(1).map((row, index) => {
+                // If your columns shifted, row[3] might be the wrong data.
+                // We are looking for the column containing "RELIANCE", "AAPL", etc.
+                const ticker = row[3]?.replace(/"/g, '').trim();
+                const price = row[8]?.replace(/"/g, '').trim();
+                const pctChange = row[12]?.replace(/"/g, '').trim();
+
+                return {
+                    symbol: ticker,
+                    close: price,
+                    change: pctChange,
+                    currency: source.currency
+                };
+            }).filter(item => item.symbol && item.symbol.length > 0);
 
             combinedData = combinedData.concat(formattedRows);
         } catch (e) {
-            console.error(`Error fetching ${source.currency} data:`, e);
+            console.error("Fetch Error:", e);
         }
     }
     
-    // Pass the combined ₹ and $ data to be displayed
+    console.log("Combined Data Array:", combinedData);
     renderRibbon(combinedData, bias);
 }
 
 function renderRibbon(data, bias) {
-    let html = "";
-    const strategies = {
-        'Loss Aversion': ['RELIANCE', 'TCS', 'AAPL', 'MSFT', 'GOLD'],
-        'Self-Attribution': ['ZOMATO', 'ADANIGREEN', 'TSLA', 'NVDA', 'BTC'],
-        'Default': ['RELIANCE', 'AAPL', 'GOOGL', 'TCS', 'INFY', 'AMZN', 'MSFT']
-    };
-
-    const targetTickers = strategies[bias] || strategies['Default'];
-    const filtered = data.filter(item => 
-    targetTickers.map(t => t.toUpperCase()).includes(item.symbol?.toUpperCase()));
+    const ribbon = document.getElementById('stockRibbon');
     
-    if (filtered.length === 0) {
-        html = "<span>No tickers found for strategy: " + bias + "</span>";
-    } else {
-        filtered.forEach(item => {
-            const isDown = item.change && item.change.includes('-');
-            const trendColor = isDown ? '#ff4d4d' : '#2ecc71';
-            html += `
-                <span class="stock-item">
-                    ${item.symbol}: ${item.currency}${item.close} 
-                    <span style="color: ${trendColor}; font-size: 0.9em;">(${item.change})</span>
-                </span>`;
-        });
+    if (data.length === 0) {
+        ribbon.innerHTML = `<span style="color:red;">Error: No data parsed. Check Column Indexes.</span>`;
+        return;
     }
 
-    document.getElementById('stockRibbon').innerHTML = html;
-}
+    // REMOVE FILTERING TEMPORARILY: Show everything to prove connection
+    let html = "";
+    data.forEach(item => {
+        const isDown = item.change && item.change.includes('-');
+        const trendColor = isDown ? '#ff4d4d' : '#2ecc71';
+        html += `
+            <span class="stock-item" style="margin-right:40px; font-weight:bold; display:inline-block;">
+                ${item.symbol}: ${item.currency}${item.close} 
+                <span style="color: ${trendColor};">(${item.change})</span>
+            </span>`;
+    });
 
+    ribbon.innerHTML = html;
+}
 // Initial Call
 onAuthStateChanged(auth, (user) => {
     if (user) {
