@@ -40,7 +40,12 @@ async function refreshDashboard(bias) {
                 throw new Error("Proxy returned an error page instead of data.");
             }
 
-            const rows = csvText.split(/\r?\n/).map(row => row.split(','));
+          // To this more flexible line:
+             const rows = csvText.split(/\r?\n/).map(row => {
+        // Automatically detect if the row uses commas or semicolons
+           const delimiter = row.includes(';') ? ';' : ',';
+           return row.split(delimiter);
+           });
 
             if (rows.length < 2) continue; 
 
@@ -141,3 +146,5 @@ onAuthStateChanged(auth, (user) => {
         console.log("No user logged in.");
     }
 });
+
+
