@@ -96,6 +96,7 @@ function renderRibbon(data, bias) {
 // Modules make functions private by default. We must attach it to 'window' to let HTML buttons use it.
 window.loadApp = function(page) {
     const apps = {
+        'F11Grow': 'https://f11grow.onrender.com/',
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
         'chat': 'https://vc-chat-box.onrender.com/'
