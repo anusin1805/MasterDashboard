@@ -101,6 +101,8 @@ window.loadApp = function(page) {
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
         'chat': 'https://vc-chat-box.onrender.com/'
+        'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/'
+        'Login': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
     
     const iframe = document.getElementById('view'); // Make sure your iframe has id="view"
