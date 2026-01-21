@@ -94,6 +94,7 @@ function renderRibbon(data, bias) {
 }
 // 3. FIX FOR "loadApp is not defined"
 // Modules make functions private by default. We must attach it to 'window' to let HTML buttons use it.
+// Ensure this is OUTSIDE any other functions at the top level of main.js
 window.loadApp = function(page) {
     const apps = {
         'F11Grow': 'https://f11grow.onrender.com/',
@@ -101,14 +102,14 @@ window.loadApp = function(page) {
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
         'chat': 'https://vc-chat-box.onrender.com/'
     };
-    const frame = document.getElementById('view');
-    if(frame && apps[page]) {
-        frame.src = apps[page];
+    
+    const iframe = document.getElementById('view'); // Make sure your iframe has id="view"
+    if (iframe && apps[page]) {
+        iframe.src = apps[page];
     } else {
-        console.error("Iframe or App URL not found");
+        console.error("App URL not found for:", page);
     }
 };
-
 // 4. LOGIC FLOW (Run Immediate Fetch -> Then Listen for Firebase)
 // A. Force fetch immediately so ribbon isn't blank
 refreshDashboard('Default');
