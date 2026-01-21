@@ -104,7 +104,7 @@ window.loadApp = function(page) {
         'chat': 'https://vc-chat-box.onrender.com/', // Added missing comma
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/', // Added missing comma
         'US Bot': 'https://anusin1805.github.io/financeF11bot/', // Added missing comma
-        'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/login.html'
+        'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
     
     const iframe = document.getElementById('view'); 
