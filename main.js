@@ -102,16 +102,15 @@ window.loadApp = function(page) {
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
         'chat': 'https://vc-chat-box.onrender.com/'
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/'
+        'US Bot': 'https://anusin1805.github.io/financeF11bot/'
         'Login': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
     
     const iframe = document.getElementById('view'); // Make sure your iframe has id="view"
     if (iframe && apps[page]) {
         iframe.src = apps[page];
-    } else {
-        console.error("App URL not found for:", page);
-    }
-};
+    } 
+ };
 // 4. LOGIC FLOW (Run Immediate Fetch -> Then Listen for Firebase)
 // A. Force fetch immediately so ribbon isn't blank
 refreshDashboard('Default');
