@@ -95,22 +95,25 @@ function renderRibbon(data, bias) {
 // 3. FIX FOR "loadApp is not defined"
 // Modules make functions private by default. We must attach it to 'window' to let HTML buttons use it.
 // Ensure this is OUTSIDE any other functions at the top level of main.js
+
 window.loadApp = function(page) {
     const apps = {
         'F11Grow': 'https://f11grow.onrender.com/',
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
-        'chat': 'https://vc-chat-box.onrender.com/'
-        'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/'
-        'US Bot': 'https://anusin1805.github.io/financeF11bot/'
+        'chat': 'https://vc-chat-box.onrender.com/', // Added missing comma
+        'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/', // Added missing comma
+        'US Bot': 'https://anusin1805.github.io/financeF11bot/', // Added missing comma
         'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/login.html'
     };
     
-    const iframe = document.getElementById('view'); // Make sure your iframe has id="view"
+    const iframe = document.getElementById('view'); 
     if (iframe && apps[page]) {
         iframe.src = apps[page];
-    } 
- };
+    } else {
+        console.error("App or iframe not found for:", page);
+    }
+};
 // 4. LOGIC FLOW (Run Immediate Fetch -> Then Listen for Firebase)
 // A. Force fetch immediately so ribbon isn't blank
 refreshDashboard('Default');
