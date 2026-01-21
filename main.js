@@ -103,7 +103,7 @@ window.loadApp = function(page) {
         'chat': 'https://vc-chat-box.onrender.com/'
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/'
         'US Bot': 'https://anusin1805.github.io/financeF11bot/'
-        'Login': 'https://anusin1805.github.io/F11DashboardLogin/'
+        'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/login.html'
     };
     
     const iframe = document.getElementById('view'); // Make sure your iframe has id="view"
