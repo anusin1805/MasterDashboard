@@ -100,6 +100,7 @@ window.loadApp = function(page) {
     const apps = {
         'F11Grow': 'https://f11grow.onrender.com/',
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
+        'Portfolio': 'https://anusin1805.github.io/F11BehaviourFinanceWheelTest/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
         'chat': 'https://vc-chat-box.onrender.com/', // Added missing comma
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/', // Added missing comma
