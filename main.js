@@ -102,6 +102,7 @@ window.loadApp = function(page) {
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
         'Portfolio': 'https://anusin1805.github.io/F11BehaviourFinanceWheelTest/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
+        'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
         'chat': 'https://vc-chat-box.onrender.com/', // Added missing comma
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/', // Added missing comma
         'US Bot': 'https://anusin1805.github.io/financeF11bot/', // Added missing comma
