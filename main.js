@@ -1,9 +1,6 @@
 import { db, auth } from './firebase-config.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import FitnessForest from './FitnessForest';
-// ... inside your main content area:
-{view === 'F11FitnessForest' && <FitnessForest />}
 
 const SOURCES = [
     {
@@ -119,6 +116,7 @@ window.loadApp = function(page) {
     const iframe = document.getElementById('view'); 
     if (iframe && apps[page]) {
         iframe.src = apps[page];
+        console.log("Loading page: " + page);
     } else {
         console.error("App or iframe not found for:", page);
     }
