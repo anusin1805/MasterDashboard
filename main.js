@@ -109,7 +109,7 @@ window.loadApp = function(page) {
         'F11FormBiases': 'https://anusin1805.github.io/F11LearnInvestmentProfiling/',
         'F11IdeaSupport': 'https://design2pptx-5.onrender.com/',
         'PortfolioDownload': 'https://f11portfoliowheelbiasesdriven-1.onrender.com/',
-        'F11FitnessForest': 'https://www.canva.com/design/DAGyFY29QTo/OLieFO6XQxwMzrwqjTN-bQ/view?embed',
+        'F11FitnessForest': 'https://www.canva.com/design/DAGyFY29QTo/OLieFO6XQxwMzrwqjTN-bQ/view?embed/',
         'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
     
