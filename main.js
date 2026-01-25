@@ -1,6 +1,9 @@
 import { db, auth } from './firebase-config.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import FitnessForest from './FitnessForest';
+// ... inside your main content area:
+{view === 'F11FitnessForest' && <FitnessForest />}
 
 const SOURCES = [
     {
