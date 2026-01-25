@@ -101,7 +101,7 @@ window.loadApp = function(page) {
         'F11Grow': 'https://f11grow.onrender.com/',
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
         'Portfolio': 'https://anusin1805.github.io/F11BehaviourFinanceWheelTest/',
-        'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/',
+        'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app',
         'chat': 'https://vc-chat-box.onrender.com/', // Added missing comma
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/', // Added missing comma
         'US Bot': 'https://anusin1805.github.io/financeF11bot/', // Added missing comma
@@ -109,7 +109,7 @@ window.loadApp = function(page) {
         'F11FormBiases': 'https://anusin1805.github.io/F11LearnInvestmentProfiling/',
         'F11IdeaSupport': 'https://design2pptx-5.onrender.com/',
         'PortfolioDownload': 'https://f11portfoliowheelbiasesdriven-1.onrender.com/',
-        'F11FitnessForest': 'https://www.canva.com/design/DAGyFY29QTo/oDjDY4VlhUB7uFqy9Rux2w/view?utm_content=DAGyFY29QTo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hf284e4da97/',
+        'F11FitnessForest': 'https://www.canva.com/design/DAGyFY29QTo/oDjDY4VlhUB7uFqy9Rux2w/view?utm_content=DAGyFY29QTo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hf284e4da97',
         'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
     
