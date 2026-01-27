@@ -98,7 +98,7 @@ function renderRibbon(data, bias) {
 
 window.loadApp = function(page) {
     const apps = {
-        'F11Grow': 'https://f11grow.onrender.com/',
+        'F11Grow': 'https://anusin1805.github.io/F11Grow/',
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
         'Portfolio': 'https://anusin1805.github.io/F11BehaviourFinanceWheelTest/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/?embed=true&embed_options=light_theme',
