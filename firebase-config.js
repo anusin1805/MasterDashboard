@@ -10,7 +10,15 @@ const firebaseConfig = {
   messagingSenderId: "118774845365",
   appId: "1:118774845365:web:99841a1b01f387a48ed3fc"
 };
-
+{
+  "hosting": {
+    "public": "public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/api/f11/live-order",
+        "function": "liveOrderProxy"
+      }
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
