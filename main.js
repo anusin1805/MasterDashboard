@@ -112,7 +112,7 @@ window.loadApp = function(page) {
         'PortfolioDownload': 'https://f11portfoliowheelbiasesdriven-1.onrender.com/',
        // NEW: Prediction / Live Strategy Engine
         'F11Prediction': 'https://anusin1805.github.io/F11-prediction-simulation/',
-        'F11LiveMode': 'https://anusin1805.github.io/F11-prediction-simulation/?mode=live',  // optional query   
+        'F11LiveMode': 'https://anusin1805.github.io/F11LiveMarketOrder/',  // optional query   
         'F11FitnessForest': 'https://www.canva.com/design/DAGyFY29QTo/OLieFO6XQxwMzrwqjTN-bQ/view?embed',
         'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
