@@ -106,7 +106,7 @@ window.loadApp = function(page) {
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/', // Added missing comma
         'US Bot': 'https://anusin1805.github.io/financeF11bot/', // Added missing comma
         'F11Crypto': 'https://anusin1805.github.io/F11Crypto/',
-        'subs': 'https://anusin1805.github.io/SubscribeF11Service/',
+        'subs': 'https://finwise-3.onrender.com',
         'F11FormBiases': 'https://anusin1805.github.io/F11LearnInvestmentProfiling/',
         'F11IdeaSupport': 'https://design2pptx-5.onrender.com/',
         'PortfolioDownload': 'https://f11portfoliowheelbiasesdriven-1.onrender.com/',
