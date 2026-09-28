@@ -117,29 +117,6 @@ window.loadApp = function(page, evt) {
         'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
 
-    if (page === 'Portfolio') {
-        // Hide iframe and show Supabase Container for Custom Portfolio logic
-        if (viewIframe) viewIframe.style.display = 'none';
-        if (appContainer) {
-            appContainer.style.display = 'block';
-            appContainer.innerHTML = '<h2>Loading your Supabase Portfolio...</h2>';
-        }
-    } else if (apps[page]) {
-        // Show iframe and route to requested application URL
-        if (appContainer) appContainer.style.display = 'none';
-        if (viewIframe) {
-            viewIframe.style.display = 'block';
-            viewIframe.src = apps[page];
-        }
-    } else {
-        if (viewIframe) viewIframe.style.display = 'none';
-        if (appContainer) {
-            appContainer.style.display = 'block';
-            appContainer.innerHTML = `<h3>${page} module coming soon.</h3>`;
-        }
-    }
-};
-
 // 4. AUTHENTICATION & INITIALIZATION LOGIC
 refreshDashboard('Default');
 
