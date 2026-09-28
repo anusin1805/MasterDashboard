@@ -101,7 +101,7 @@ window.loadApp = function(page, evt) {
     const apps = {
         'F11Grow': 'https://anusin1805.github.io/F11Grow/',
         'profile': 'https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/',
-        'Portfolio': 'https://f11portfoliowheelbiasesdriven-1.onrender.com/',
+        'Portfolio': 'https://anusin1805.github.io/F11BehaviourFinanceWheelTest/',
         'market': 'https://reinvestmentpoint-ms7xuznw25ojwy4zgw2sxk.streamlit.app/?embed=true&embed_options=light_theme',
         'chat': 'https://vc-chat-box.onrender.com/',
         'India Bot': 'https://anusin1805.github.io/FinanceF11IndiaBot/',
