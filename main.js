@@ -117,6 +117,23 @@ window.loadApp = function(page, evt) {
         'SignIn': 'https://anusin1805.github.io/F11DashboardLogin/'
     };
 
+    // Simplified Router: Bypasses custom containers and loads everything into the iframe
+    if (apps[page]) {
+        if (appContainer) appContainer.style.display = 'none';
+        if (viewIframe) {
+            viewIframe.style.display = 'block';
+            viewIframe.src = apps[page];
+        }
+    } else {
+        // Fallback for undefined routes
+        if (viewIframe) viewIframe.style.display = 'none';
+        if (appContainer) {
+            appContainer.style.display = 'block';
+            appContainer.innerHTML = `<h3>${page} module coming soon.</h3>`;
+        }
+    }
+};
+
 // 4. AUTHENTICATION & INITIALIZATION LOGIC
 refreshDashboard('Default');
 
