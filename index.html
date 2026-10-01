@@ -9,45 +9,68 @@
 </head>
 <body>
 
-    <div class="sidebar">
+    <!-- 1. The Menu Button fixed to the top left -->
+    <button class="openbtn" onclick="openNav()">☰</button>
+
+    <!-- 2. The Sidebar (Added id="mySidebar" and a close button) -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        
         <h2>FinWise F11</h2>
-        <button class="nav-link" onclick="loadApp('F11Grow')">🎯 F11FinWise App</button>
-        <button class="nav-link active" onclick="loadApp('profile')">🎡 Behavior Wheel</button>
-        <button class="nav-link active" onclick="loadApp('Portfolio')">🎡 Behavior Wheel Portfolio</button>
-        <button class="nav-link" onclick="loadApp('market')">📈 Live Market</button>
-        <button class="nav-link" onclick="loadApp('India Bot')"> 📱 India F11Bot</button>
-        <button class="nav-link" onclick="loadApp('chat')">💬 24/7 Chat</button>
-        <a style="color: hotpink;" href="https://finwise-3.onrender.com">⭐ Subscribe to Premium</a>
-        <button class="nav-link" onclick="loadApp('US Bot')">💻 US F11Bot</button>
-        <button class="nav-link" onclick="loadApp('F11Crypto')">👑 Cryptos </button>
-        <button class="nav-link" onclick="loadApp('F11FormBiases')">✍️ Forms Biases F11</button>
-        <button class="nav-link" onclick="loadApp('F11IdeaSupport')">🏆 🧐 📍 Idea&InnovatorF11 Corner 👋🎁🏆 </button>
-        <button class="nav-link" onclick="loadApp('PortfolioDownload')">🏆 Portfolio Download 🏆 </button>
-        <button class="nav-link" onclick="loadApp('F11Prediction')">🧠 F11 AI Prediction / Live Mode</button>
-        <button class="nav-link" onclick="loadApp('F11LiveOrder')">🪙F11LiveMarketOrder</button>
-        <button class="nav-link" onclick="loadApp('F11FitnessForest')"> 🎋💚Fitness, Farming Tips, Forest💚🎋 </button>
-        <button class="nav-link" onclick="loadApp('SignIn')">💻 Register</button>
-        <a style="color: hotpink; background-color: blue; font-weight: bold;" href="login.html">Login</a>
+        <!-- Added closeNav() to these buttons so the menu auto-closes on selection, giving full view of the tab -->
+        <button class="nav-link" onclick="loadApp('F11Grow'); closeNav();">🎯 F11FinWise App</button>
+        <button class="nav-link active" onclick="loadApp('profile'); closeNav();">🎡 Behavior Wheel</button>
+        <button class="nav-link active" onclick="loadApp('Portfolio'); closeNav();">🎡 Behavior Wheel Portfolio</button>
+        <button class="nav-link" onclick="loadApp('market'); closeNav();">📈 Live Market</button>
+        <button class="nav-link" onclick="loadApp('India Bot'); closeNav();">📱 India F11Bot</button>
+        <button class="nav-link" onclick="loadApp('chat'); closeNav();">💬 24/7 Chat</button>
+        <a style="color: hotpink; display: block; margin: 10px 0;" href="https://finwise-3.onrender.com">⭐ Subscribe to Premium</a>
+        <button class="nav-link" onclick="loadApp('US Bot'); closeNav();">💻 US F11Bot</button>
+        <button class="nav-link" onclick="loadApp('F11Crypto'); closeNav();">👑 Cryptos </button>
+        <button class="nav-link" onclick="loadApp('F11FormBiases'); closeNav();">✍️ Forms Biases F11</button>
+        <button class="nav-link" onclick="loadApp('F11IdeaSupport'); closeNav();">🏆 🧐 📍 Idea&InnovatorF11 Corner 👋🎁🏆 </button>
+        <button class="nav-link" onclick="loadApp('PortfolioDownload'); closeNav();">🏆 Portfolio Download 🏆 </button>
+        <button class="nav-link" onclick="loadApp('F11Prediction'); closeNav();">🧠 F11 AI Prediction / Live Mode</button>
+        <button class="nav-link" onclick="loadApp('F11LiveOrder'); closeNav();">🪙F11LiveMarketOrder</button>
+        <button class="nav-link" onclick="loadApp('F11FitnessForest'); closeNav();">🎋💚Fitness, Farming Tips, Forest💚🎋 </button>
+        <button class="nav-link" onclick="loadApp('SignIn'); closeNav();">💻 Register</button>
+        <a style="color: hotpink; background-color: blue; font-weight: bold; display: block; padding: 10px; margin-top: 10px; text-align: center;" href="login.html">Login</a>
         
         <div class="strategy-indicator">
             <p id="currentBiasHeader">Strategy: Loading...</p>
         </div>
     </div>
 
-    <div class="main-wrapper">
+    <!-- 3. Main Content Wrapper (Added id="main") -->
+    <div id="main" class="main-wrapper">
         <div class="top-bar">
+            <!-- Pushed this slightly right in CSS so it doesn't overlap the hamburger menu -->
             <div id="stockRibbonContainer">
                 <div id="stockRibbon"><div class="marquee-content">Fetching Market Data...</div></div>
             </div>
         </div>
 
         <iframe id="view" src="https://anusin1805.github.io/F11FinWiseBehaviorFinanceProfiling/"></iframe>
-    
     </div>
 
     <div id="app-container" class="container mt-4">
     </div>
 
     <script type="module" src="main.js"></script>
+    
+    <!-- 4. The Pagination/Push JavaScript -->
+    <script>
+        function openNav() {
+            // Opens sidebar to 300px and pushes the main wrapper 300px to the right
+            document.getElementById("mySidebar").style.width = "300px";
+            document.getElementById("main").style.marginLeft = "300px";
+        }
+
+        function closeNav() {
+            // Closes sidebar and resets main wrapper position for full view
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+    </script>
 </body>
 </html>
