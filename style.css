@@ -1,118 +1,157 @@
 :root {
-    --primary: #332590;
+    --primary: #1e1e2f; /* Dark sidebar */
     --bg-light: #f4f7f6;
+    --top-bar-bg: #0f0f1a;
 }
 
-body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; overflow: hidden; background: var(--bg-light); }
+body { 
+    margin: 0; 
+    display: flex; 
+    font-family: 'Inter', 'Segoe UI', sans-serif; 
+    height: 100vh; 
+    overflow-x: hidden; /* Prevents horizontal scrollbar when menu pushes content */
+    background: var(--bg-light); 
+}
 
-/* Layout Structure */
-.sidebar { width: 250px; background: var(--primary); color: white; display: flex; flex-direction: column; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
-.main-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
-iframe { width: 100%; height: 100%; border: none; background: white; }
+/* 1. The Fixed Hamburger Button */
+.openbtn {
+    font-size: 26px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #fff; /* Make sure this contrasts with your top bar */
+    padding: 10px 15px;
+    border: none;
+    position: fixed;
+    top: 5px;
+    left: 10px;
+    z-index: 1000; /* Stays above everything */
+}
 
-/* Navigation Buttons */
+/* 2. The Sliding Sidebar */
+.sidebar { 
+    height: 100vh;
+    width: 0; /* Hidden by default for the open/close effect */
+    background-color: var(--primary); 
+    color: white; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5); 
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001; /* Stays above the hamburger button */
+    overflow-x: hidden; 
+    overflow-y: auto;
+    transition: 0.5s; /* Smooth sliding animation */
+    padding-top: 60px; /* Space for the close button */
+    white-space: nowrap; /* Keeps button text from wrapping during animation */
+}
+
+/* The 'X' Close Button inside Sidebar */
+.sidebar .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 36px;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Navigation Links */
 .nav-link { 
-    background: none; border: none; color: white; padding: 15px; text-align: left; 
-    font-size: 16px; cursor: pointer; border-radius: 8px; transition: 0.3s; margin-bottom: 5px;
+    background: transparent; 
+    border: none; 
+    color: white; 
+    padding: 12px 15px; 
+    text-align: left; 
+    font-size: 16px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    transition: background 0.3s; 
+    margin: 5px 15px; 
+    width: calc(100% - 30px); /* Fits neatly inside the padding */
 }
-.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); }
+
+.nav-link:hover, .nav-link.active { 
+    background-color: #33334d; 
+}
+
+/* 3. Main Content Wrapper (The part that gets pushed) */
+.main-wrapper { 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
+    transition: margin-left .5s; /* Smoothly pushes the wrapper right */
+    margin-left: 0;
+    width: 100%;
+}
 
 /* Top Bar & Marquee Logic */
-.top-bar { height: 60px; background: white; border-bottom: 1px solid #ddd; display: flex; align-items: center; overflow: hidden; }
-#stockRibbonContainer { width: 100%; overflow: hidden; white-space: nowrap; position: relative; }
+.top-bar { 
+    height: 60px; 
+    background-color: var(--top-bar-bg); 
+    color: #00ff00;
+    border-bottom: 1px solid #333; 
+    display: flex; 
+    align-items: center; 
+    overflow: hidden; 
+    padding-left: 60px; /* Crucial: leaves empty space so the ☰ button doesn't block text */
+}
+
+#stockRibbonContainer { 
+    width: 100%; 
+    overflow: hidden; 
+    white-space: nowrap; 
+    position: relative; 
+}
 
 #stockRibbon {
     min-width: 100%;
-    display: flex;
+    display: flex !important;
     align-items: center;
-    height: 50px; /* Ensure it has height */
+    height: 50px;
     white-space: nowrap;
     animation: none !important;
     transform: none !important;
-    display: flex !important;
     flex-wrap: wrap;
-    color: #333 !important;
-    background: #fff;
+    color: #00ff00 !important;
+    background: transparent;
     padding: 10px;
-    z-index: 9999;
+    z-index: 999;
 }
+
 .marquee-content {
     display: inline-block;
     white-space: nowrap;
-    padding-left: 100%; /* Push start to the right edge */
+    padding-left: 100%;
     animation: marquee 40s linear infinite;
 }
-/* The actual scrolling animation */
+
 @keyframes marquee {
     0% { transform: translate(0, 0); }
     100% { transform: translate(-100%, 0); }
 }
 
-.strategy-indicator { margin-top: auto; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 14px; }
-body {
-    margin: 0;
-    display: flex;
-    font-family: 'Inter', sans-serif;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.sidebar {
-    width: 250px;
-    background-color: #1e1e2f;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    overflow-y: auto;
-}
-
-.nav-link {
-    background: transparent;
-    color: white;
-    border: none;
-    text-align: left;
-    padding: 10px;
-    margin: 5px 0;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-.nav-link:hover, .nav-link.active {
-    background-color: #33334d;
-}
-
-.main-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
-
-.top-bar {
-    background-color: #0f0f1a;
-    color: #00ff00;
-    padding: 10px;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-#view {
-    flex: 1;
-    width: 100%;
-    border: none;
+/* The embedded App view */
+#view { 
+    width: 100%; 
+    height: 100%; 
+    border: none; 
+    background: white; 
+    flex: 1; /* Fills remaining vertical space below top-bar */
 }
 
 #app-container {
     padding: 20px;
 }
 
-.strategy-indicator {
-    margin-top: auto;
-    padding-top: 15px;
+/* Strategy Loading Text */
+.strategy-indicator { 
+    margin-top: auto; /* Pushes to the bottom of the sidebar */
+    padding: 15px; 
     border-top: 1px solid #33334d;
-    font-size: 0.9em;
-    color: #aaa;
+    font-size: 0.9em; 
+    color: #aaa; 
+    margin-bottom: 20px;
 }
-
